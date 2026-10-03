@@ -60,6 +60,51 @@
             border-color: #3b82f6;
         }
 
+        /* Advanced Drag and Drop File Upload Area styling */
+        .file-upload-wrapper {
+            border: 2px dashed #374151;
+            border-radius: 6px;
+            padding: 30px;
+            text-align: center;
+            background-color: #0f172a;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .file-upload-wrapper:hover, .file-upload-wrapper.dragover {
+            border-color: #3b82f6;
+            background-color: #1e293b;
+        }
+
+        .file-upload-wrapper input[type="file"] {
+            display: none; /* Hide the native browser button */
+        }
+
+        .upload-icon {
+            font-size: 2rem;
+            color: #3b82f6;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .file-upload-text {
+            color: #9ca3af;
+            font-size: 0.95rem;
+            margin: 0;
+        }
+
+        .file-upload-text strong {
+            color: #3b82f6;
+        }
+
+        .file-status {
+            margin-top: 10px;
+            font-size: 0.9rem;
+            color: #10b981; /* Emerald green for feedback */
+            font-weight: 600;
+            display: none;
+        }
+
         .checkbox-group {
             display: flex;
             align-items: center;
@@ -133,6 +178,18 @@
         <p class="section-subtitle">Quickly compute baseline production cost values for your custom print configurations.</p>
         
         <div class="calc-card">
+            <!-- STL Design File Upload Dropzone Slot -->
+            <div class="form-group">
+                <label>Upload Your 3D Design File</label>
+                <div class="file-upload-wrapper" id="dropzone" onclick="document.getElementById('stlFile').click()">
+                    <span class="upload-icon">📁</span>
+                    <p class="file-upload-text" id="uploadText">Drag & drop your 3D design file here or <strong>browse files</strong></p>
+                    <p class="file-upload-text" style="font-size: 0.8rem; margin-top: 5px; color: #6b7280;">Accepted formats: .stl (Max 50MB)</p>
+                    <input type="file" id="stlFile" accept=".stl" onchange="handleFileSelection(this)">
+                    <div class="file-status" id="fileStatus"></div>
+                </div>
+            </div>
+
             <!-- Material Selection Dropdown -->
             <div class="form-group">
                 <label for="material">Material Selection</label>
@@ -168,7 +225,7 @@
                 <div class="price-display" id="totalPrice">₹250.00</div>
             </div>
 
-            <button class="order-btn" onclick="alert('Quote submitted! We will reach out to you shortly.')">Submit Quote Request</button>
+            <button class="order-btn" onclick="submitQuote()">Submit Quote Request</button>
         </div>
     </div>
 
@@ -176,41 +233,84 @@
         &copy; 2026 TANEXA 3D. All rights reserved.
     </footer>
 
-    <!-- Dynamic JavaScript Cost Formula Processing Script Engine -->
+    <!-- Interactive Cost Engine and File Upload Logic -->
     <script>
+        // Displays chosen 3D model metadata names visually
+        function handleFileSelection(input) {
+            const statusDisplay = document.getElementById('fileStatus');
+            const mainText = document.getElementById('uploadText');
+            
+            if (input.files && input.files[0]) {
+                const fileName = input.files[0].name;
+                statusDisplay.innerText = `✓ Selected Model: ${fileName}`;
+                statusDisplay.style.display = 'block';
+                mainText.style.color = '#4b5563';
+            } else {
+                statusDisplay.style.display = 'none';
+                mainText.style.color = '#9ca3af';
+            }
+        }
+
+        // Drag and drop event listeners
+        const dropzone = document.getElementById('dropzone');
+        
+        ['dragenter', 'dragover'].forEach(eventName => {
+            dropzone.addEventListener(eventName, (e) => {
+                e.preventDefault();
+                dropzone.classList.add('dragover');
+            }, false);
+        });
+
+        ['dragleave', 'drop'].forEach(eventName => {
+            dropzone.addEventListener(eventName, (e) => {
+                e.preventDefault();
+                dropzone.classList.remove('dragover');
+            }, false);
+        });
+
+        dropzone.addEventListener('drop', (e) => {
+            const dt = e.dataTransfer;
+            const files = dt.files;
+            const fileInput = document.getElementById('stlFile');
+            
+            if(files.length > 0 && files[0].name.toLowerCase().endsWith('.stl')) {
+                fileInput.files = files;
+                handleFileSelection(fileInput);
+            } else {
+                alert('Invalid file format. Please upload a valid .stl 3D design file.');
+            }
+        });
+
+        // Real-Time Pricing Cost Calculator Logic
         function calculatePrice() {
-            // Retrieve layout parameters from client input choices
             const materialCostPerGram = parseFloat(document.getElementById('material').value);
             const weightGrams = parseFloat(document.getElementById('weight').value) || 0;
             const printHours = parseFloat(document.getElementById('time').value) || 0;
             const needsProcessing = document.getElementById('processing').checked;
 
-            // Business Operational Pricing Rate Variables
-            const machineRatePerHour = 25; // ₹25 hourly overhead for operating utility/machine wear
-            const flatProcessingFee = 150; // ₹150 baseline finishing labor cost
+            const machineRatePerHour = 25; // ₹25 hourly running rate overhead
+            const flatProcessingFee = 150; // ₹150 flat post-processing labor adder
             
-            // Calculate base material and structural machine operation factors
             let materialCost = weightGrams * materialCostPerGram;
             let machineCost = printHours * machineRatePerHour;
-            
-            let totalCost = materialCost + machineCost;
-            
-            // Inject post processing labor adder if toggled true
-            if (needsProcessing) {
-                totalCost += flatProcessingFee;
-            }
-
-            // Enforce low-margin protective ordering minimum floor standard
-            if(totalCost > 0 && totalCost < 100) {
-                totalCost = 100;
-            }
-
-            // Print computed output result smoothly back to view element
-            document.getElementById('totalPrice').innerText = '₹' + totalCost.toFixed(2);
-        }
-        
-        // Execute dynamic parser function once upon file instantiation hook execution
-        window.onload = calculatePrice;
-    </script>
-</body>
-</html>
+let totalCost = materialCost + machineCost;
+if (needsProcessing) {
+totalCost += flatProcessingFee;
+}
+// Protective minimum order floor threshold
+if(totalCost > 0 && totalCost < 100) {
+totalCost = 100;
+}
+document.getElementById('totalPrice').innerText = '₹' + totalCost.toFixed(2);
+}
+// Submission Button Action validation
+function submitQuote() {
+const fileInput = document.getElementById('stlFile');
+if(!fileInput.files || fileInput.files.length === 0) {
+alert('Please upload a .stl 3D design file before submitting.');
+return;
+}
+alert('Quote submitted successfully with your 3D design file! We will review your model and contact you shortly.');
+}
+// Execute math layout check immediately upon page load
+window.onload = calculatePrice;
