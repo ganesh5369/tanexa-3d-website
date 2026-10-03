@@ -34,6 +34,9 @@
             border: 1px solid #1f2937;
             border-radius: 8px;
             padding: 35px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
             transition: transform 0.3s, border-color 0.3s;
         }
 
@@ -46,7 +49,17 @@
             color: #3b82f6;
             font-size: 1.5rem;
             margin-top: 0;
-            margin-bottom: 15px;
+            margin-bottom: 5px;
+        }
+
+        /* NEW: Pricing Tier Subtitle Badge styling */
+        .price-badge {
+            font-size: 0.95rem;
+            color: #10b981; /* Clean Emerald Green Accent for pricing */
+            font-weight: 600;
+            margin-bottom: 20px;
+            display: inline-block;
+            letter-spacing: 0.5px;
         }
 
         .service-card p {
@@ -58,7 +71,7 @@
         .feature-list {
             list-style: none;
             padding: 0;
-            margin: 0;
+            margin: 0 0 30px 0;
         }
 
         .feature-list li {
@@ -73,6 +86,28 @@
             color: #3b82f6;
             font-weight: bold;
             margin-right: 12px;
+        }
+
+        /* NEW: Card Action Link Button styling */
+        .card-action-btn {
+            display: block;
+            text-align: center;
+            background-color: transparent;
+            border: 1px solid #374151;
+            color: #ffffff;
+            padding: 12px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            margin-top: auto; /* Pushes the button perfectly to the card bottom */
+        }
+
+        .card-action-btn:hover {
+            background-color: #3b82f6;
+            border-color: #3b82f6;
+            color: #ffffff;
         }
     </style>
 </head>
@@ -94,38 +129,50 @@
         <div class="services-grid">
             <!-- Service item 1 -->
             <div class="service-card">
-                <h2>Custom 3D Printing & Fabrication</h2>
-                <p>High-quality additive manufacturing turning your digital concepts into functional structural parts and physical products.</p>
-                <ul class="feature-list">
-                    <li>FDM printing with tough PLA, PLA+, and PETG</li>
-                    <li>SLA/Resin printing for ultra-smooth surface details</li>
-                    <li>Rapid functional mechanical prototyping</li>
-                    <li>Custom scale architectural structural models</li>
-                </ul>
+                <div>
+                    <h2>Custom 3D Printing & Fabrication</h2>
+                    <span class="price-badge">Starting from ₹3 / Gram</span>
+                    <p>High-quality additive manufacturing turning your digital concepts into functional structural parts and physical products.</p>
+                    <ul class="feature-list">
+                        <li>FDM printing with tough PLA, PLA+, and PETG</li>
+                        <li>SLA/Resin printing for ultra-smooth surface details</li>
+                        <li>Rapid functional mechanical prototyping</li>
+                        <li>Custom scale architectural structural models</li>
+                    </ul>
+                </div>
+                <a href="calculator.html" class="card-action-btn">Calculate Print Cost</a>
             </div>
 
             <!-- Service item 2 -->
             <div class="service-card">
-                <h2>Precision 3D Modeling & CAD Design</h2>
-                <p>Professional engineering design and geometric modeling optimization to ensure seamless production compatibility.</p>
-                <ul class="feature-list">
-                    <li>Parametric 3D part design (Fusion 360 optimized)</li>
-                    <li>Conversion of standard images/blueprints to 3D</li>
-                    <li>Optimization for minimal material print paths</li>
-                    <li>Functional component assembly layouts</li>
-                </ul>
+                <div>
+                    <h2>Precision 3D Modeling & CAD Design</h2>
+                    <span class="price-badge">Custom Engineering Layouts</span>
+                    <p>Professional engineering design and geometric modeling optimization to ensure seamless production compatibility.</p>
+                    <ul class="feature-list">
+                        <li>Parametric 3D part design (Fusion 360 optimized)</li>
+                        <li>Conversion of standard images/blueprints to 3D</li>
+                        <li>Optimization for minimal material print paths</li>
+                        <li>Functional component assembly layouts</li>
+                    </ul>
+                </div>
+                <a href="calculator.html" class="card-action-btn">Request CAD Quote</a>
             </div>
 
             <!-- Service item 3 -->
             <div class="service-card">
-                <h2>Advanced Laser Engraving</h2>
-                <p>High-precision custom laser surface etching and marking on dynamic materials for custom branding and personalization.</p>
-                <ul class="feature-list">
-                    <li>Industrial grade multi-surface marking</li>
-                    <li>Highly-detailed custom metal engraving</li>
-                    <li>Custom structural corporate branding layout</li>
-                    <li>Precision glass and acrylic etching</li>
-                </ul>
+                <div>
+                    <h2>Advanced Laser Engraving</h2>
+                    <span class="price-badge">High-Detail Marking Solutions</span>
+                    <p>High-precision custom laser surface etching and marking on dynamic materials for custom branding and personalization.</p>
+                    <ul class="feature-list">
+                        <li>Industrial grade multi-surface marking</li>
+                        <li>Highly-detailed custom metal engraving</li>
+                        <li>Custom structural corporate branding layout</li>
+                        <li>Precision glass and acrylic etching</li>
+                    </ul>
+                </div>
+                <a href="calculator.html" class="card-action-btn">Estimate Engraving</a>
             </div>
         </div>
     </div>
