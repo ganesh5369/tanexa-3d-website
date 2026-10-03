@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Print Calculator | TANEXA 3D</title>
+    <!-- Linking to your global dark-tech styles file -->
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Specialized layout settings unique to the Calculator tool elements */
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 80px 20px;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-top: 0;
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+        }
+
+        .calc-card {
+            background-color: #111827;
+            border: 1px solid #1f2937;
+            border-radius: 8px;
+            padding: 40px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            margin-top: 40px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #d1d5db;
+            font-weight: 500;
+        }
+
+        .form-group input[type="number"],
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            background-color: #1f2937;
+            border: 1px solid #374151;
+            border-radius: 5px;
+            color: #ffffff;
+            font-size: 1rem;
+            box-sizing: border-box;
+            outline: none;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            border-color: #3b82f6;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .checkbox-group input {
+            margin-right: 12px;
+            width: 18px;
+            height: 18px;
+            accent-color: #3b82f6;
+        }
+
+        .result-box {
+            background-color: #1e293b;
+            border-left: 4px solid #3b82f6;
+            padding: 20px;
+            border-radius: 4px;
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        .result-box span {
+            font-size: 1.1rem;
+            color: #9ca3af;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .price-display {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #3b82f6;
+        }
+
+        .order-btn {
+            display: block;
+            width: 100%;
+            background-color: transparent;
+            border: 2px solid #3b82f6;
+            color: #3b82f6;
+            padding: 14px;
+            text-align: center;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border-radius: 5px;
+            margin-top: 25px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .order-btn:hover {
+            background-color: #3b82f6;
+            color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">TANEXA 3D</div>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="services.html">Services</a>
+            <a href="calculator.html" class="active">Calculator</a>
+        </nav>
+    </header>
+
+    <div class="container">
+        <h1>Instant 3D Print Estimator</h1>
+        <p class="section-subtitle">Quickly compute baseline production cost values for your custom print configurations.</p>
+        
+        <div class="calc-card">
+            <!-- Material Selection Dropdown -->
+            <div class="form-group">
+                <label for="material">Material Selection</label>
+                <select id="material" onchange="calculatePrice()">
+                    <option value="3">Standard PLA / PLA+ (₹3 / gram)</option>
+                    <option value="5">Durable PETG (₹5 / gram)</option>
+                    <option value="7">Flexible TPU (₹7 / gram)</option>
+                    <option value="8">High-Strength Nylon / ABS (₹8 / gram)</option>
+                </select>
+            </div>
+
+            <!-- Print Weight Value Field -->
+            <div class="form-group">
+                <label for="weight">Estimated Print Weight (Grams)</label>
+                <input type="number" id="weight" value="50" min="1" oninput="calculatePrice()">
+            </div>
+
+            <!-- Runtime Machine Hour Duration Field -->
+            <div class="form-group">
+                <label for="time">Estimated Printing Duration (Hours)</label>
+                <input type="number" id="time" value="4" min="1" oninput="calculatePrice()">
+            </div>
+
+            <!-- Post Processing Toggle Checkbox -->
+            <div class="form-group checkbox-group">
+                <input type="checkbox" id="processing" onchange="calculatePrice()">
+                <label for="processing">Request Post-Processing (Sanding, support cleanup, assembly)</label>
+            </div>
+
+            <!-- Dynamic Estimated Total Output Container Box -->
+            <div class="result-box">
+                <span>Estimated Total Cost</span>
+                <div class="price-display" id="totalPrice">₹250.00</div>
+            </div>
+
+            <button class="order-btn" onclick="alert('Quote submitted! We will reach out to you shortly.')">Submit Quote Request</button>
+        </div>
+    </div>
+
+    <footer>
+        &copy; 2026 TANEXA 3D. All rights reserved.
+    </footer>
+
+    <!-- Dynamic JavaScript Cost Formula Processing Script Engine -->
+    <script>
+        function calculatePrice() {
+            // Retrieve layout parameters from client input choices
+            const materialCostPerGram = parseFloat(document.getElementById('material').value);
+            const weightGrams = parseFloat(document.getElementById('weight').value) || 0;
+            const printHours = parseFloat(document.getElementById('time').value) || 0;
+            const needsProcessing = document.getElementById('processing').checked;
+
+            // Business Operational Pricing Rate Variables
+            const machineRatePerHour = 25; // ₹25 hourly overhead for operating utility/machine wear
+            const flatProcessingFee = 150; // ₹150 baseline finishing labor cost
+            
+            // Calculate base material and structural machine operation factors
+            let materialCost = weightGrams * materialCostPerGram;
+            let machineCost = printHours * machineRatePerHour;
+            
+            let totalCost = materialCost + machineCost;
+            
+            // Inject post processing labor adder if toggled true
+            if (needsProcessing) {
+                totalCost += flatProcessingFee;
+            }
+
+            // Enforce low-margin protective ordering minimum floor standard
+            if(totalCost > 0 && totalCost < 100) {
+                totalCost = 100;
+            }
+
+            // Print computed output result smoothly back to view element
+            document.getElementById('totalPrice').innerText = '₹' + totalCost.toFixed(2);
+        }
+        
+        // Execute dynamic parser function once upon file instantiation hook execution
+        window.onload = calculatePrice;
+    </script>
+</body>
+</html>
