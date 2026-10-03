@@ -8,12 +8,6 @@ body {
     flex-direction: column;
     min-height: 100vh;
 }
-.services-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 30px;
-}
-
 
 /* Navigation Layout styling */
 header {
@@ -43,10 +37,10 @@ nav a:hover, nav a.active {
     color: #3b82f6;
 }
 
-/* Hero Context Wrapper Section */
+/* Hero Section */
 .hero {
     background-color: #0f172a;
-    padding: 100px 20px;
+    padding: 80px 20px;
     text-align: center;
     border-bottom: 1px solid #1f2937;
 }
@@ -71,7 +65,6 @@ nav a:hover, nav a.active {
     justify-content: center;
 }
 
-/* Action Buttons styling */
 .cta-btn {
     padding: 12px 30px;
     font-size: 1rem;
@@ -101,14 +94,14 @@ nav a:hover, nav a.active {
     color: white;
 }
 
-/* NEW: Portfolio Elements Architecture Rules */
-.portfolio {
+/* NEW: Interactive Storefront Element Structuring Rules */
+.store-section {
     max-width: 1200px;
     margin: 0 auto;
     padding: 80px 20px;
 }
 
-.portfolio h2 {
+.store-section h2 {
     font-size: 2.2rem;
     text-align: center;
     margin-top: 0;
@@ -122,54 +115,150 @@ nav a:hover, nav a.active {
     font-size: 1.1rem;
 }
 
-.portfolio-grid {
+.products-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 30px;
+    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    gap: 40px;
 }
 
-.portfolio-card {
+.product-card {
     background-color: #111827;
     border: 1px solid #1f2937;
     border-radius: 8px;
     overflow: hidden;
-    transition: transform 0.3s, border-color 0.3s;
+    display: flex;
+    flex-direction: column;
+    transition: border-color 0.3s;
 }
 
-.portfolio-card:hover {
-    transform: translateY(-5px);
+.product-card:hover {
     border-color: #3b82f6;
 }
 
-/* Visual Container Placeholder Box */
-.image-placeholder {
-    height: 200px;
-    background-color: #1e293b;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #475569;
-    font-weight: bold;
-    font-size: 1.2rem;
+/* Media Viewport Layout Area */
+.viewer-container {
+    position: relative;
+    height: 240px;
+    background-color: #0f172a;
     border-bottom: 1px solid #1f2937;
 }
 
-.card-info {
-    padding: 20px;
+.product-image-box, .product-3d-box {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #4b5563;
+    font-weight: 600;
 }
 
-.card-info h3 {
-    margin-top: 0;
-    margin-bottom: 10px;
-    font-size: 1.3rem;
-    color: #f3f4f6;
+.product-3d-box {
+    display: none; /* Hidden on initialization state */
+    background-color: #020617;
 }
 
-.card-info p {
-    margin: 0;
+/* Infinite 3D Orbital Simulation Effects Rotation rules */
+.cube-animation {
+    font-size: 3.5rem;
+    animation: spin3d 6s infinite linear;
+}
+
+@keyframes spin3d {
+    from { transform: rotateY(0deg); }
+    to { transform: rotateY(360deg); }
+}
+
+.toggle-view-btn {
+    position: absolute;
+    bottom: 15px;
+    right: 15px;
+    background-color: #1f2937;
+    border: 1px solid #374151;
+    color: #d1d5db;
+    padding: 6px 12px;
+    font-size: 0.8rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.toggle-view-btn:hover {
+    background-color: #3b82f6;
+    color: white;
+}
+
+.product-details {
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.product-details h3 {
+    margin: 0 0 10px 0;
+    font-size: 1.4rem;
+}
+
+.price-tag {
+    font-size: 1.5rem;
+    color: #10b981; /* Green Pricing highlight */
+    font-weight: bold;
+    margin: 0 0 15px 0;
+}
+
+.prod-desc {
     color: #9ca3af;
     font-size: 0.95rem;
     line-height: 1.5;
+    margin: 0 0 25px 0;
+    flex: 1;
+}
+
+/* Purchase Action Alignments */
+.purchase-actions {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+.qty-selector {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.qty-selector label {
+    font-size: 0.9rem;
+    color: #9ca3af;
+}
+
+.qty-selector input {
+    width: 60px;
+    padding: 10px;
+    background-color: #1f2937;
+    border: 1px solid #374151;
+    border-radius: 5px;
+    color: white;
+    text-align: center;
+    outline: none;
+}
+
+.cart-btn {
+    flex: 1;
+    background-color: #3b82f6;
+    color: white;
+    border: none;
+    padding: 12px;
+    font-weight: 600;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.cart-btn:hover {
+    background-color: #2563eb;
 }
 
 /* Footer Section layout architecture */
